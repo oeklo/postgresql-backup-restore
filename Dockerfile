@@ -1,16 +1,9 @@
-FROM python:3-alpine
+FROM silintl/postgresql-backup-restore
 
-# Current version of s3cmd is in edge/testing repo
-RUN echo https://dl-cdn.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories
-
-# Install everything via repo because repo & pip installs can break things
-RUN apk update \
- && apk add --no-cache \
-            bash \
-            postgresql14-client \
-            py3-magic \
-            py3-dateutil \
-            s3cmd
+RUN apk del postgresql14-client \
+    && apk add --no-cache \
+      postgresql16-client \
+      curl
 
 COPY application/ /data/
 WORKDIR /data
